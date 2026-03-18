@@ -320,10 +320,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sourceacademy/conductor@https://github.com/loyaltypollution/conductor.git#src":
-  version: 0.2.1
-  resolution: "@sourceacademy/conductor@https://github.com/loyaltypollution/conductor.git#commit=e7ae77736f0802a742fcb3a55ed82b05ab950557"
-  checksum: 10c0/5290517cd96025b3a98ff6e4dd44a9ac3c67430250de7d6f6a65f1286692c5111d0b64b2b201f8793907ffdac008576c70bfb415607976ef4e91387e0d089917
+"@sourceacademy/conductor@https://github.com/source-academy/conductor.git#main":
+  version: 0.3.0
+  resolution: "@sourceacademy/conductor@https://github.com/source-academy/conductor.git#commit=8c446571b2c1f20a536bdf7cee1e2359b637f216"
+  checksum: 10c0/facd3b58edb215e325d16c99c339c9f1ee86e122800736992296009d9983fc2a1f53e67c146d7899ba310e5661648e9f36e16a3cc8d2de18a1afdc0e2dddc240
   languageName: node
   linkType: hard
 
@@ -1274,7 +1274,7 @@ __metadata:
     "@rollup/plugin-commonjs": "npm:^28.0.6"
     "@rollup/plugin-node-resolve": "npm:^16.0.0"
     "@rollup/plugin-typescript": "npm:^12.1.2"
-    "@sourceacademy/conductor": "https://github.com/loyaltypollution/conductor.git#src"
+    "@sourceacademy/conductor": "https://github.com/source-academy/conductor.git#main"
     pyodide: "npm:^0.28.2"
     rollup: "npm:^4.37.0"
     rollup-plugin-copy: "npm:^3.5.0"

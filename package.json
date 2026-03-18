@@ -6,7 +6,8 @@
   "packageManager": "yarn@4.2.2",
   "scripts": {
     "preinstall": "node -e \"if(!/yarn/.test(process.env.npm_config_user_agent||'')){console.error('This project uses Yarn via Corepack. Run: corepack enable && yarn install');process.exit(1)}\"",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "serve": "http-server dist -p 20089 -c-1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.6",
@@ -19,7 +20,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "@sourceacademy/conductor": "https://github.com/loyaltypollution/conductor.git#src",
+    "@sourceacademy/conductor": "https://github.com/source-academy/conductor.git#main",
     "tslib": "^2.8.1"
   }
 }
