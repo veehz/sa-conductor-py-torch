@@ -12,7 +12,7 @@ import { loadPyodideGeneric } from "./loadPyodide";
  */
 export function getImportRoots(chunk: string): Set<string> {
   const roots = new Set<string>();
-  for (const rawLine of chunk.split(/\r?\n/)) {
+  for (const rawLine of chunk.split(/\r?\n|;/)) {
     const commentIndex = rawLine.indexOf("#");
     const cleanLine = commentIndex >= 0 ? rawLine.slice(0, commentIndex) : rawLine;
 
@@ -52,11 +52,10 @@ export function hijackImports(
   moduleName: string
 ): { code: string; found: boolean } {
   const injected = `__sa_import_${moduleName}`;
-  const lines = chunk.split(/\r?\n/);
   const output: string[] = [];
   let found = false;
 
-  for (const rawLine of lines) {
+  for (const rawLine of chunk.split(/\r?\n|;/)) {
     const commentIndex = rawLine.indexOf("#");
     const cleanLine = commentIndex >= 0 ? rawLine.slice(0, commentIndex) : rawLine;
 
@@ -147,38 +146,49 @@ export default class PythonEvaluator extends BasicEvaluator {
 
   constructor(conductor: IRunnerPlugin) {
     super(conductor);
+    console.log("[PythonEvaluator] constructor called");
     this.pyodide = loadPyodideGeneric().then(async pyodide => {
+      console.log("[PythonEvaluator] Pyodide loaded, loading micropip...");
       await pyodide.loadPackage("micropip");
       await pyodide.setStdout({
         batched: (output: string) => {
           this.conductor.sendOutput(output);
         }
       });
+      console.log("[PythonEvaluator] Ready.");
       return pyodide;
     });
   }
 
   async evaluateChunk(chunk: string): Promise<void> {
+    console.log("[PythonEvaluator] evaluateChunk called");
     const pyodide = await this.pyodide;
 
     const roots = getImportRoots(chunk);
+    console.log("[PythonEvaluator] import roots:", [...roots]);
     const { code, found: needsTorch } = hijackImports(chunk, "torch");
+    console.log("[PythonEvaluator] needsTorch:", needsTorch, "torchLoaded:", this.torchLoaded);
+    console.log("[PythonEvaluator] transformed code:\n", code);
 
     if (needsTorch && !this.torchLoaded) {
+      console.log("[PythonEvaluator] loading torch...");
       await this.loadTorch(pyodide);
       pyodide.globals.set("__sa_import_torch", pyodide.globals.get("torch"));
       this.torchLoaded = true;
+      console.log("[PythonEvaluator] torch loaded and __sa_import_torch set");
     }
 
     roots.delete("torch");
     if (roots.size > 0) {
       const modulesArray = Array.from(roots);
+      console.log("[PythonEvaluator] installing via micropip:", modulesArray);
       const installerCode = `\nimport importlib, micropip\nmods = ${JSON.stringify(modulesArray)}\nmissing = []\nfor m in mods:\n    try:\n        importlib.import_module(m)\n    except Exception:\n        missing.append(m)\nif missing:\n    await micropip.install(missing)\n`;
       await pyodide.runPythonAsync(installerCode);
     }
 
-    console.log("Executing final chunk in Pyodide:\n", code);
+    console.log("[PythonEvaluator] executing code in Pyodide");
     const output = await pyodide.runPythonAsync(code);
+    console.log("[PythonEvaluator] execution complete, output:", output);
     this.conductor.sendOutput(output);
   }
 

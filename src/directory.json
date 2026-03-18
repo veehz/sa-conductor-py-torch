@@ -1,0 +1,14 @@
+[
+  {
+    "id": "python",
+    "name": "Python",
+    "evaluators": [
+      {
+        "id": "pyodide",
+        "name": "Pyodide",
+        "path": "https://veehz.github.io/sa-conductor-py-torch/index.js",
+        "capabilities": []
+      }
+    ]
+  }
+]
