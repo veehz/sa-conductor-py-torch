@@ -1279,6 +1279,7 @@ __metadata:
     rollup: "npm:^4.37.0"
     rollup-plugin-copy: "npm:^3.5.0"
     rollup-plugin-polyfill-node: "npm:^0.13.0"
+    torch: "https://pkg.pr.new/veehz/torch@6007969"
     tslib: "npm:^2.8.1"
     typescript: "npm:^5.6.3"
   languageName: unknown
@@ -1608,6 +1609,13 @@ __metadata:
   dependencies:
     is-number: "npm:^7.0.0"
   checksum: 10c0/487988b0a19c654ff3e1961b87f471702e708fa8a8dd02a298ef16da7206692e8552a0250e8b3e8759270f62e9d8314616f6da274734d3b558b1fc7b7724e892
+  languageName: node
+  linkType: hard
+
+"torch@https://pkg.pr.new/veehz/torch@6007969":
+  version: 0.1.0
+  resolution: "torch@https://pkg.pr.new/veehz/torch@6007969"
+  checksum: 10c0/bde381a0d266c845970fd34b3d27048709b60fd9e64a2d96f3080eb9c3a4bb1433bcc0ea1bc1123fbb31883ad2623c031ede94319e514f54398b9752c290c6d4
   languageName: node
   linkType: hard
 
